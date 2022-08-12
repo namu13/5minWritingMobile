@@ -1,6 +1,13 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BLACK } from "../../color";
+import Record from "../../components/Record";
 
 const Home = () => {
   return (
@@ -10,7 +17,14 @@ const Home = () => {
         <Text style={styles.text_subtitle}>지금까지 작성한 글</Text>
       </View>
       <View style={styles.record_container}>
-        <Text style={styles.record_dummytext}>아직 작성한 글이 없어요!</Text>
+        <ScrollView>
+          <Record
+            title="제목을 입력하세요"
+            mainText="본문을 입력하세요 본문을 입력하세요 본문을 입력하세요 본문을 입력하세요 본문을 입력하세요 본문을 입력하세요"
+            date="2022.08.01"
+          />
+        </ScrollView>
+        {/* <Text style={styles.record_dummytext}>아직 작성한 글이 없어요!</Text> */}
       </View>
       <TouchableOpacity style={styles.writing_btn}>
         <MaterialCommunityIcons style={styles.btn_icon} name="pencil" />
