@@ -13,15 +13,19 @@ import { useTimer } from "use-timer";
 import { BLACK, LIGHT_GREY, RED } from "../color";
 
 const Editor = ({ navigation }) => {
-  const { time, start } = useTimer({
-    initialTime: 100,
+  const {
+    time: second,
+    start,
+    status,
+  } = useTimer({
+    initialTime: 300,
+    endTime: 0,
     timerType: "DECREMENTAL",
   });
-
   return (
     <View>
       <Bar
-        progress={1}
+        progress={second / 300}
         width={null}
         height={50}
         borderWidth={0}
@@ -37,7 +41,14 @@ const Editor = ({ navigation }) => {
             color="black"
           />
         </TouchableOpacity>
-        <Text style={styles.timer}>{time}</Text>
+        <View style={styles.timerContainer}>
+          <Text style={styles.timer}>
+            {Math.floor(second / 60).toString()} :{" "}
+            {Math.floor(second % 60)
+              .toString()
+              .padStart(2, "0")}
+          </Text>
+        </View>
         <TouchableOpacity>
           <Ionicons name="checkmark" color="black" style={styles.check} />
         </TouchableOpacity>
@@ -81,6 +92,10 @@ const styles = StyleSheet.create({
   },
   check: {
     fontSize: 35,
+  },
+  timerContainer: {
+    width: 130,
+    paddingLeft: 32,
   },
   timer: {
     marginTop: 5,
