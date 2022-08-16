@@ -1,4 +1,5 @@
 import {
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -11,8 +12,12 @@ import { Entypo } from "@expo/vector-icons";
 import { Bar } from "react-native-progress";
 import { useTimer } from "use-timer";
 import { BLACK, LIGHT_GREY, RED } from "../color";
+import { useState } from "react";
 
 const Editor = ({ navigation }) => {
+  const [title, setTitle] = useState("");
+  const [mainText, setMainText] = useState("");
+
   const {
     time: second,
     start,
@@ -22,6 +27,23 @@ const Editor = ({ navigation }) => {
     endTime: 0,
     timerType: "DECREMENTAL",
   });
+  const isTextExist = () => (title || mainText ? true : false);
+
+  const buttonAlert = () => {
+    if (isTextExist()) {
+      return Alert.alert("저장할까요?", "저장한 이후에는 수정할 수 없어요.", [
+        {
+          text: "취소",
+        },
+        { text: "저장", onPress: () => saveText() },
+      ]);
+    }
+    return navigation.navigate("Home");
+  };
+
+  const saveText = () => {
+    console.log("saved");
+  };
   return (
     <View>
       <Bar
@@ -34,7 +56,7 @@ const Editor = ({ navigation }) => {
       />
 
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+        <TouchableOpacity onPress={buttonAlert}>
           <Entypo
             name="chevron-thin-left"
             style={styles.chevron}
@@ -49,7 +71,7 @@ const Editor = ({ navigation }) => {
               .padStart(2, "0")}
           </Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={buttonAlert}>
           <Ionicons name="checkmark" color="black" style={styles.check} />
         </TouchableOpacity>
       </View>
@@ -61,6 +83,7 @@ const Editor = ({ navigation }) => {
           placeholderTextColor={LIGHT_GREY}
           autoCorrect={false}
           onChange={start}
+          onChangeText={setTitle}
         />
         <TextInput
           style={styles.mainText}
@@ -70,6 +93,7 @@ const Editor = ({ navigation }) => {
           placeholderTextColor={LIGHT_GREY}
           autoCorrect={false}
           onChange={start}
+          onChangeText={setMainText}
         />
       </View>
     </View>
