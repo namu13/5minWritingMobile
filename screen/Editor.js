@@ -1,6 +1,5 @@
 import {
   Alert,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -10,6 +9,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { Bar } from "react-native-progress";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTimer } from "use-timer";
 import { BLACK, LIGHT_GREY, RED } from "../color";
 import { useState } from "react";
@@ -38,12 +38,46 @@ const Editor = ({ navigation }) => {
         { text: "저장", onPress: () => saveText() },
       ]);
     }
-    return navigation.navigate("Home");
+    navigation.navigate("Home");
   };
 
-  const saveText = () => {
-    console.log("saved");
+  const saveText = async () => {
+    try {
+      const time = new Date();
+
+      const storedTextData = await AsyncStorage.getItem("@TEXT_DATA");
+      console.log(storedTextData);
+      if (storedTextData) {
+        const newTextData = {
+          ...storedTextData,
+          [Date.now()]: {
+            title,
+            mainText,
+            timeStamp: `${time.getFullYear()}.${time.getMonth()}.${time.getDate()}`,
+          },
+        };
+        navigation.navigate("Home");
+
+        return await AsyncStorage.setItem(
+          "@TEXT_DATA",
+          JSON.stringify(newTextData)
+        );
+      }
+
+      const textData = {
+        [Date.now()]: {
+          title,
+          mainText,
+          timeStamp: `${time.getFullYear()}.${time.getMonth()}.${time.getDate()}`,
+        },
+      };
+      await AsyncStorage.setItem("@TEXT_DATA", JSON.stringify(textData));
+      navigation.navigate("Home");
+    } catch (e) {
+      Alert.alert(JSON.stringify(e));
+    }
   };
+
   return (
     <View>
       <Bar
