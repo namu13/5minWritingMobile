@@ -10,6 +10,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { Bar } from "react-native-progress";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { storage } from "../storage";
 import { useTimer } from "use-timer";
 import { BLACK, LIGHT_GREY, RED } from "../color";
 import { useState } from "react";
@@ -41,12 +42,14 @@ const Editor = ({ navigation }) => {
     navigation.navigate("Home");
   };
 
-  const saveText = async () => {
+  const saveText = () => {
     try {
       const time = new Date();
 
-      const storedTextData = await AsyncStorage.getItem("@TEXT_DATA");
-      console.log(storedTextData);
+      const storedTextData = storage.getString("@text_data");
+
+      console.log(JSON.stringify(storedTextData));
+
       if (storedTextData) {
         const newTextData = {
           ...storedTextData,
@@ -56,27 +59,63 @@ const Editor = ({ navigation }) => {
             timeStamp: `${time.getFullYear()}.${time.getMonth()}.${time.getDate()}`,
           },
         };
-        navigation.navigate("Home");
 
-        return await AsyncStorage.setItem(
-          "@TEXT_DATA",
-          JSON.stringify(newTextData)
-        );
+        navigation.navigate("Home");
+        return storage.set("@text_data", JSON.stringify(newTextData));
       }
 
       const textData = {
+        title,
+        mainText,
         [Date.now()]: {
           title,
           mainText,
           timeStamp: `${time.getFullYear()}.${time.getMonth()}.${time.getDate()}`,
         },
       };
-      await AsyncStorage.setItem("@TEXT_DATA", JSON.stringify(textData));
+      storage.set("@text_data", JSON.stringify(textData));
       navigation.navigate("Home");
     } catch (e) {
       Alert.alert(JSON.stringify(e));
     }
   };
+
+  // const saveText = async () => {
+  //   try {
+  //     const time = new Date();
+
+  //     const storedTextData = await AsyncStorage.getItem("@TEXT_DATA");
+  //     console.log(storedTextData);
+  //     if (storedTextData) {
+  //       const newTextData = {
+  //         ...storedTextData,
+  //         [Date.now()]: {
+  //           title,
+  //           mainText,
+  //           timeStamp: `${time.getFullYear()}.${time.getMonth()}.${time.getDate()}`,
+  //         },
+  //       };
+  //       navigation.navigate("Home");
+
+  //       return await AsyncStorage.setItem(
+  //         "@TEXT_DATA",
+  //         JSON.stringify(newTextData)
+  //       );
+  //     }
+
+  //     const textData = {
+  //       [Date.now()]: {
+  //         title,
+  //         mainText,
+  //         timeStamp: `${time.getFullYear()}.${time.getMonth()}.${time.getDate()}`,
+  //       },
+  //     };
+  //     await AsyncStorage.setItem("@TEXT_DATA", JSON.stringify(textData));
+  //     navigation.navigate("Home");
+  //   } catch (e) {
+  //     Alert.alert(JSON.stringify(e));
+  //   }
+  // };
 
   return (
     <View>
