@@ -30,7 +30,27 @@ const Editor = ({ navigation }) => {
   });
   const isTextExist = () => (title || mainText ? true : false);
 
-  const buttonAlert = () => {
+  const chevronButtonAlert = () => {
+    if (isTextExist()) {
+      return Alert.alert(
+        "저장하지 않고 나갈까요?",
+        "현재 작성 내용은 모두 삭제됩니다.",
+        [
+          {
+            text: "취소",
+          },
+          {
+            text: "나가기",
+            style: "destructive",
+            onPress: () => navigation.navigate("Home"),
+          },
+        ]
+      );
+    }
+    navigation.navigate("Home");
+  };
+
+  const CheckButtonAlert = () => {
     if (isTextExist()) {
       return Alert.alert("저장할까요?", "저장한 이후에는 수정할 수 없어요.", [
         {
@@ -129,7 +149,7 @@ const Editor = ({ navigation }) => {
       />
 
       <View style={styles.header}>
-        <TouchableOpacity onPress={buttonAlert}>
+        <TouchableOpacity onPress={chevronButtonAlert}>
           <Entypo
             name="chevron-thin-left"
             style={styles.chevron}
@@ -144,7 +164,7 @@ const Editor = ({ navigation }) => {
               .padStart(2, "0")}
           </Text>
         </View>
-        <TouchableOpacity onPress={buttonAlert}>
+        <TouchableOpacity onPress={CheckButtonAlert}>
           <Ionicons name="checkmark" color="black" style={styles.check} />
         </TouchableOpacity>
       </View>
