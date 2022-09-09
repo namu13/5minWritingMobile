@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "5minWritingMobile",
-    "slug": "5minWritingMobile",
+    "name": "fiveMinWriting",
+    "slug": "fiveMinWriting",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
     ]
   },
-  "name": "5minWritingMobile"
+  "name": "fiveMinWriting"
 }
