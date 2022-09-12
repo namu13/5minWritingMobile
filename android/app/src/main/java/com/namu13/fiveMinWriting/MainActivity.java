@@ -1,4 +1,4 @@
-package com.5minwritingmobile;
+package com.namu13.fiveMinWriting;
 
 import android.os.Build;
 import android.os.Bundle;

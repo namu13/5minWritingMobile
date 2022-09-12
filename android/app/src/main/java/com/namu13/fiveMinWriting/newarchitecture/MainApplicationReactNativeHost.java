@@ -1,4 +1,4 @@
-package com.5minwritingmobile.newarchitecture;
+package com.namu13.fiveMinWriting.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -20,9 +20,9 @@ import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.5minwritingmobile.BuildConfig;
-import com.5minwritingmobile.newarchitecture.components.MainComponentsRegistry;
-import com.5minwritingmobile.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.namu13.fiveMinWriting.BuildConfig;
+import com.namu13.fiveMinWriting.newarchitecture.components.MainComponentsRegistry;
+import com.namu13.fiveMinWriting.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

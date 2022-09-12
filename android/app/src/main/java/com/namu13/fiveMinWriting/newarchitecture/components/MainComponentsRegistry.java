@@ -1,4 +1,4 @@
-package com.5minwritingmobile.newarchitecture.components;
+package com.namu13.fiveMinWriting.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;
