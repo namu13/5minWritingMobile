@@ -5,6 +5,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
@@ -13,11 +15,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { storage } from "../storage";
 import { useTimer } from "use-timer";
 import { BLACK, LIGHT_GREY, RED } from "../color";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { RichEditor } from "react-native-pell-rich-editor";
 
 const Editor = ({ navigation }) => {
   const [title, setTitle] = useState("");
   const [mainText, setMainText] = useState("");
+
+  const RichText = useRef();
 
   const {
     time: second,
@@ -85,8 +90,6 @@ const Editor = ({ navigation }) => {
       }
 
       const textData = {
-        title,
-        mainText,
         [Date.now()]: {
           title,
           mainText,
@@ -168,7 +171,7 @@ const Editor = ({ navigation }) => {
           <Ionicons name="checkmark" color="black" style={styles.check} />
         </TouchableOpacity>
       </View>
-      <View style={styles.textInput}>
+      <ScrollView style={styles.textInput}>
         <TextInput
           style={styles.title}
           placeholder="제목을 입력하세요"
@@ -178,7 +181,7 @@ const Editor = ({ navigation }) => {
           onChange={start}
           onChangeText={setTitle}
         />
-        <TextInput
+        {/* <TextInput
           style={styles.mainText}
           multiline
           placeholder="본문을 입력하세요"
@@ -187,8 +190,18 @@ const Editor = ({ navigation }) => {
           autoCorrect={false}
           onChange={start}
           onChangeText={setMainText}
+        /> */}
+        <RichEditor
+          // containerStyle={styles.mainText}
+          style={styles.mainText}
+          ref={RichText}
+          placeholder={"본문을 입력하세요"}
+          onChange={start}
+          onChangeText={setMainText}
+          usecontainer={true}
+          initialHeight={600}
         />
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -222,6 +235,7 @@ const styles = StyleSheet.create({
   textInput: {
     height: "100%",
     paddingHorizontal: 17,
+    // backgroundColor: "teal",
   },
   title: {
     height: 55,
@@ -229,8 +243,9 @@ const styles = StyleSheet.create({
     fontFamily: "Snow",
   },
   mainText: {
-    height: "70%",
+    // minHeight: "70%",
     fontFamily: "Mapo",
+    textAlignVertical: "top",
   },
 });
 
