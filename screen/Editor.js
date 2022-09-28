@@ -6,29 +6,23 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
-  KeyboardAvoidingView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { Bar } from "react-native-progress";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { storage } from "../storage";
 import { useTimer } from "use-timer";
 import { BLACK, LIGHT_GREY, RED } from "../color";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { RichEditor } from "react-native-pell-rich-editor";
+import { useContext } from "react";
+import { DBContext } from "../context";
 
 const Editor = ({ navigation }) => {
+  const realm = useContext(DBContext);
   const [title, setTitle] = useState("");
   const [mainText, setMainText] = useState("");
 
-  const RichText = useRef();
-
-  const {
-    time: second,
-    start,
-    status,
-  } = useTimer({
+  const { time: second, start } = useTimer({
     initialTime: 300,
     endTime: 0,
     timerType: "DECREMENTAL",
@@ -67,78 +61,17 @@ const Editor = ({ navigation }) => {
     navigation.navigate("Home");
   };
 
-  const saveText = () => {
-    try {
-      const time = new Date();
-
-      const storedTextData = storage.getString("@text_data");
-
-      console.log(JSON.stringify(storedTextData));
-
-      if (storedTextData) {
-        const newTextData = {
-          ...storedTextData,
-          [Date.now()]: {
-            title,
-            mainText,
-            timeStamp: `${time.getFullYear()}.${time.getMonth()}.${time.getDate()}`,
-          },
-        };
-
-        navigation.navigate("Home");
-        return storage.set("@text_data", JSON.stringify(newTextData));
-      }
-
-      const textData = {
-        [Date.now()]: {
-          title,
-          mainText,
-          timeStamp: `${time.getFullYear()}.${time.getMonth()}.${time.getDate()}`,
-        },
-      };
-      storage.set("@text_data", JSON.stringify(textData));
-      navigation.navigate("Home");
-    } catch (e) {
-      Alert.alert(JSON.stringify(e));
-    }
+  const saveText = async () => {
+    realm.write(() => {
+      realm.create("Document", {
+        _id: Date.now(),
+        title,
+        mainText,
+        timeStamp: `2022-9-29`,
+      });
+    });
+    navigation.navigate("Home");
   };
-
-  // const saveText = async () => {
-  //   try {
-  //     const time = new Date();
-
-  //     const storedTextData = await AsyncStorage.getItem("@TEXT_DATA");
-  //     console.log(storedTextData);
-  //     if (storedTextData) {
-  //       const newTextData = {
-  //         ...storedTextData,
-  //         [Date.now()]: {
-  //           title,
-  //           mainText,
-  //           timeStamp: `${time.getFullYear()}.${time.getMonth()}.${time.getDate()}`,
-  //         },
-  //       };
-  //       navigation.navigate("Home");
-
-  //       return await AsyncStorage.setItem(
-  //         "@TEXT_DATA",
-  //         JSON.stringify(newTextData)
-  //       );
-  //     }
-
-  //     const textData = {
-  //       [Date.now()]: {
-  //         title,
-  //         mainText,
-  //         timeStamp: `${time.getFullYear()}.${time.getMonth()}.${time.getDate()}`,
-  //       },
-  //     };
-  //     await AsyncStorage.setItem("@TEXT_DATA", JSON.stringify(textData));
-  //     navigation.navigate("Home");
-  //   } catch (e) {
-  //     Alert.alert(JSON.stringify(e));
-  //   }
-  // };
 
   return (
     <View>
@@ -179,25 +112,14 @@ const Editor = ({ navigation }) => {
           placeholderTextColor={LIGHT_GREY}
           autoCorrect={false}
           onChange={start}
-          onChangeText={setTitle}
+          onChangeText={(text) => setTitle(text)}
         />
-        {/* <TextInput
-          style={styles.mainText}
-          multiline
-          placeholder="본문을 입력하세요"
-          fontSize={20}
-          placeholderTextColor={LIGHT_GREY}
-          autoCorrect={false}
-          onChange={start}
-          onChangeText={setMainText}
-        /> */}
         <RichEditor
-          // containerStyle={styles.mainText}
+          editorStyle={{ backgroundColor: "#F2F2F2" }}
           style={styles.mainText}
-          ref={RichText}
           placeholder={"본문을 입력하세요"}
-          onChange={start}
-          onChangeText={setMainText}
+          onChange={(text) => setMainText(text)}
+          onKeyDown={start}
           usecontainer={true}
           initialHeight={600}
         />
