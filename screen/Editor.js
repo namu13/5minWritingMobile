@@ -22,12 +22,21 @@ const Editor = ({ navigation }) => {
   const [title, setTitle] = useState("");
   const [mainText, setMainText] = useState("");
 
+  const isTextExist = () => (title || mainText ? true : false);
+
   const { time: second, start } = useTimer({
     initialTime: 300,
     endTime: 0,
     timerType: "DECREMENTAL",
+    onTimeOver: () => {
+      if (!isTextExist()) {
+        return navigation.navigate("Home");
+      }
+      saveText();
+      Alert.alert("글이 자동 저장되었습니다.");
+      navigation.navigate("Home");
+    },
   });
-  const isTextExist = () => (title || mainText ? true : false);
 
   const chevronButtonAlert = () => {
     if (isTextExist()) {
@@ -73,9 +82,6 @@ const Editor = ({ navigation }) => {
         }).format(Date.now())}`,
       });
     });
-
-    console.log(realm.objects("Document"));
-    navigation.navigate("Home");
   };
 
   return (
