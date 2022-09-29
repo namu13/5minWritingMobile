@@ -61,15 +61,20 @@ const Editor = ({ navigation }) => {
     navigation.navigate("Home");
   };
 
-  const saveText = async () => {
+  const saveText = () => {
     realm.write(() => {
       realm.create("Document", {
         _id: Date.now(),
         title,
         mainText,
-        timeStamp: `2022-9-29`,
+        timeStamp: `${new Intl.DateTimeFormat("ko-KR", {
+          dateStyle: "long",
+          timeStyle: "short",
+        }).format(Date.now())}`,
       });
     });
+
+    console.log(realm.objects("Document"));
     navigation.navigate("Home");
   };
 
@@ -157,7 +162,6 @@ const styles = StyleSheet.create({
   textInput: {
     height: "100%",
     paddingHorizontal: 17,
-    // backgroundColor: "teal",
   },
   title: {
     height: 55,
@@ -165,7 +169,6 @@ const styles = StyleSheet.create({
     fontFamily: "Snow",
   },
   mainText: {
-    // minHeight: "70%",
     fontFamily: "Mapo",
     textAlignVertical: "top",
   },
