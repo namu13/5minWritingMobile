@@ -34,40 +34,39 @@ const Editor = ({ navigation }) => {
       }
       saveText();
       Alert.alert("글이 자동 저장되었습니다.");
-      navigation.navigate("Home");
     },
   });
 
   const chevronButtonAlert = () => {
-    if (isTextExist()) {
-      return Alert.alert(
-        "저장하지 않고 나갈까요?",
-        "현재 작성 내용은 모두 삭제됩니다.",
-        [
-          {
-            text: "취소",
-          },
-          {
-            text: "나가기",
-            style: "destructive",
-            onPress: () => navigation.navigate("Home"),
-          },
-        ]
-      );
+    if (!isTextExist()) {
+      return navigation.navigate("Home");
     }
-    navigation.navigate("Home");
-  };
-
-  const CheckButtonAlert = () => {
-    if (isTextExist()) {
-      return Alert.alert("저장할까요?", "저장한 이후에는 수정할 수 없어요.", [
+    Alert.alert(
+      "저장하지 않고 나갈까요?",
+      "현재 작성 내용은 모두 삭제됩니다.",
+      [
         {
           text: "취소",
         },
-        { text: "저장", onPress: () => saveText() },
-      ]);
+        {
+          text: "나가기",
+          style: "destructive",
+          onPress: () => navigation.navigate("Home"),
+        },
+      ]
+    );
+  };
+
+  const CheckButtonAlert = () => {
+    if (!isTextExist()) {
+      return navigation.navigate("Home");
     }
-    navigation.navigate("Home");
+    Alert.alert("저장할까요?", "저장한 이후에는 수정할 수 없어요.", [
+      {
+        text: "취소",
+      },
+      { text: "저장", onPress: () => saveText() },
+    ]);
   };
 
   const saveText = () => {
@@ -82,6 +81,7 @@ const Editor = ({ navigation }) => {
         }).format(Date.now())}`,
       });
     });
+    navigation.navigate("Home");
   };
 
   return (
