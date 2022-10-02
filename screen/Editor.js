@@ -7,6 +7,8 @@ import {
   View,
   ScrollView,
 } from "react-native";
+import moment from "moment";
+import "moment/locale/ko";
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { Bar } from "react-native-progress";
@@ -75,10 +77,7 @@ const Editor = ({ navigation }) => {
         _id: Date.now(),
         title,
         mainText,
-        timeStamp: `${new Intl.DateTimeFormat("ko-KR", {
-          dateStyle: "long",
-          timeStyle: "short",
-        }).format(Date.now())}`,
+        timeStamp: `${moment().format("lll")}`,
       });
     });
     navigation.navigate("Home");
@@ -124,15 +123,21 @@ const Editor = ({ navigation }) => {
           autoCorrect={false}
           onChange={start}
           onChangeText={(text) => setTitle(text)}
+          selectionColor={BLACK}
         />
         <RichEditor
-          editorStyle={{ backgroundColor: "#F2F2F2" }}
+          editorStyle={{
+            backgroundColor: "#F2F2F2",
+            contentCSSText: "font-size: 19px;",
+            caretColor: BLACK,
+          }}
           style={styles.mainText}
           placeholder={"본문을 입력하세요"}
           onChange={(text) => setMainText(text)}
           onKeyDown={start}
           usecontainer={true}
           initialHeight={600}
+          pasteAsPlainText={true}
         />
       </ScrollView>
     </View>
@@ -171,6 +176,7 @@ const styles = StyleSheet.create({
   },
   title: {
     height: 55,
+    marginHorizontal: 8,
     color: BLACK,
     fontFamily: "Snow",
   },
