@@ -1,15 +1,19 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { useState, useEffect, useContext } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BLACK } from "../color";
 import Record from "../components/Record";
+import { DBContext } from "../context";
+import { FlatList } from "react-native";
 
 const Home = ({ navigation }) => {
+  const [documentData, setDocumentData] = useState([]);
+  const realm = useContext(DBContext);
+
+  useEffect(() => {
+    setDocumentData(realm.objects("Document").sorted("_id", true));
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.text_container}>
@@ -17,14 +21,25 @@ const Home = ({ navigation }) => {
         <Text style={styles.text_subtitle}>지금까지 작성한 글</Text>
       </View>
       <View style={styles.record_container}>
-        <ScrollView>
-          {/* <Record
-            title="제목을 입력하세요"
-            mainText="본문을 입력하세요 본문을 입력하세요 본문을 입력하세요 본문을 입력하세요 본문을 입력하세요 본문을 입력하세요"
-            date="2022.08.01"
-          /> */}
-        </ScrollView>
-        <Text style={styles.record_dummytext}>아직 작성한 글이 없어요!</Text>
+        {documentData === [] ? (
+          <Text style={styles.record_dummytext}>아직 작성한 글이 없어요!</Text>
+        ) : (
+          <FlatList
+            style={styles.record_flatlist}
+            data={documentData}
+            renderItem={({ item }) => (
+              <Record
+                title={item.title}
+                mainText={item.mainText}
+                date={item.timeStamp}
+              />
+            )}
+            keyExtractor={(item) => item._id}
+            ItemSeparatorComponent={() => (
+              <View style={{ marginBottom: 15 }}></View>
+            )}
+          />
+        )}
       </View>
       <TouchableOpacity
         style={styles.writing_btn}
@@ -61,6 +76,9 @@ const styles = StyleSheet.create({
   record_container: {
     flex: 4,
     alignItems: "center",
+  },
+  record_flatlist: {
+    width: "100%",
   },
   record_dummytext: {
     fontFamily: "Mapo",
