@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import moment from "moment";
 import "moment/locale/ko";
@@ -23,6 +24,8 @@ const Editor = ({ navigation }) => {
   const realm = useContext(DBContext);
   const [title, setTitle] = useState("");
   const [mainText, setMainText] = useState("");
+
+  const { height } = Dimensions.get("window");
 
   const isTextExist = () => (title || mainText ? true : false);
 
@@ -114,7 +117,11 @@ const Editor = ({ navigation }) => {
           <Ionicons name="checkmark" color="black" style={styles.check} />
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.textInput}>
+      <ScrollView
+        style={styles.textInput}
+        contentInset={{ bottom: 280 }}
+        contentContainerStyle={{ paddingBottom: 200 }}
+      >
         <TextInput
           style={styles.title}
           placeholder="제목을 입력하세요"
@@ -136,7 +143,7 @@ const Editor = ({ navigation }) => {
           onChange={(text) => setMainText(text)}
           onKeyDown={start}
           usecontainer={true}
-          initialHeight={600}
+          initialHeight={height - 200}
           pasteAsPlainText={true}
         />
       </ScrollView>
