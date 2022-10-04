@@ -87,7 +87,7 @@ const Editor = ({ navigation }) => {
   };
 
   return (
-    <View>
+    <>
       <Bar
         progress={second / 300}
         width={null}
@@ -147,7 +147,7 @@ const Editor = ({ navigation }) => {
           pasteAsPlainText={true}
         />
       </ScrollView>
-    </View>
+    </>
   );
 };
 

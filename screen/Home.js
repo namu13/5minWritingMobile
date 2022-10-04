@@ -11,7 +11,8 @@ const Home = ({ navigation }) => {
   const realm = useContext(DBContext);
 
   useEffect(() => {
-    setDocumentData(realm.objects("Document").sorted("_id", true));
+    const document = realm.objects("Document").sorted("_id", true);
+    setDocumentData(document);
   }, []);
 
   return (
@@ -32,6 +33,8 @@ const Home = ({ navigation }) => {
                 title={item.title}
                 mainText={item.mainText}
                 date={item.timeStamp}
+                id={item._id}
+                navigation={navigation}
               />
             )}
             keyExtractor={(item) => item._id}

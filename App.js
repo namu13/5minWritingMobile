@@ -10,6 +10,7 @@ import Editor from "./screen/Editor";
 import { useState } from "react";
 import { useEffect } from "react";
 import { DBContext } from "./context";
+import Viewer from "./screen/Viewer";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,7 +54,7 @@ export default function App() {
   return (
     <DBContext.Provider value={realm}>
       <NavigationContainer>
-        <StatusBar style="inverted" />
+        <StatusBar style="dark" />
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
@@ -61,6 +62,7 @@ export default function App() {
         >
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Editor" component={Editor} />
+          <Stack.Screen name="Viewer" component={Viewer} />
         </Stack.Navigator>
       </NavigationContainer>
     </DBContext.Provider>

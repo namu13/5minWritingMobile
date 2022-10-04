@@ -1,29 +1,20 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import RenderHtml from "react-native-render-html";
-import { useWindowDimensions } from "react-native";
 import { BLACK, GREY, LIGHT_GREY } from "../color";
+import HtmlRenderer from "./HtmlRenderer";
 
-const Record = ({ title, mainText, date }) => {
-  const { width } = useWindowDimensions();
-
-  const htmlStyle = {
-    fontFamily: "Mapo",
-    fontSize: 17,
-    color: BLACK,
-  };
-
+const Record = ({ title, mainText, date, id, navigation }) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() =>
+        navigation.navigate("Viewer", { title, mainText, date, id })
+      }
+    >
       <Text numberOfLines={1} style={styles.title}>
         {title}
       </Text>
       <View style={styles.mainTextContainer}>
-        <RenderHtml
-          source={{ html: mainText }}
-          contentWidth={width}
-          systemFonts={["Mapo"]}
-          baseStyle={htmlStyle}
-        />
+        <HtmlRenderer mainText={mainText} fontSize={17} />
       </View>
       <Text style={styles.date}>{date}</Text>
       <View style={styles.divider}></View>
