@@ -11,8 +11,10 @@ const Home = ({ navigation }) => {
   const realm = useContext(DBContext);
 
   useEffect(() => {
-    const document = realm.objects("Document").sorted("_id", true);
-    setDocumentData(document);
+    const document = realm.objects("Document");
+    document.addListener((document) => {
+      setDocumentData(document.sorted("_id", true));
+    });
   }, []);
 
   return (

@@ -1,9 +1,12 @@
+import React from "react";
 import { useWindowDimensions } from "react-native";
 import RenderHtml from "react-native-render-html";
 import { BLACK } from "../color";
 
-const HtmlRenderer = ({ mainText, fontSize }) => {
+const HtmlRenderer = React.memo(({ mainText, fontSize }) => {
   const { width } = useWindowDimensions();
+
+  const systemFonts = ["Mapo"];
 
   const htmlStyle = {
     fontFamily: "Mapo",
@@ -15,10 +18,10 @@ const HtmlRenderer = ({ mainText, fontSize }) => {
     <RenderHtml
       source={{ html: mainText }}
       contentWidth={width}
-      systemFonts={["Mapo"]}
+      systemFonts={systemFonts}
       baseStyle={htmlStyle}
     />
   );
-};
+});
 
 export default HtmlRenderer;
