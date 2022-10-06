@@ -14,7 +14,7 @@ const Record = ({ title, mainText, date, id, navigation }) => {
         {title}
       </Text>
       <View style={styles.mainTextContainer}>
-        <HtmlRenderer mainText={mainText} fontSize={17} />
+        <HtmlRenderer mainText={mainText} fontSize={17} selectable={false} />
       </View>
       <Text style={styles.date}>{date}</Text>
       <View style={styles.divider}></View>

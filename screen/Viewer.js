@@ -50,10 +50,14 @@ const Viewer = ({ route, navigation }) => {
         </TouchableOpacity>
       </SafeAreaView>
       <ScrollView style={styles.textContainer}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.date}>{date}</Text>
+        <Text style={styles.title} selectable={true}>
+          {title}
+        </Text>
+        <Text style={styles.date} selectable={true}>
+          {date}
+        </Text>
         <View style={styles.mainTextContainer}>
-          <HtmlRenderer mainText={mainText} fontSize={21} />
+          <HtmlRenderer mainText={mainText} fontSize={21} selectable={true} />
         </View>
       </ScrollView>
     </>

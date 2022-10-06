@@ -3,7 +3,7 @@ import { useWindowDimensions } from "react-native";
 import RenderHtml from "react-native-render-html";
 import { BLACK } from "../color";
 
-const HtmlRenderer = React.memo(({ mainText, fontSize }) => {
+const HtmlRenderer = React.memo(({ mainText, fontSize, selectable }) => {
   const { width } = useWindowDimensions();
 
   const systemFonts = ["Mapo"];
@@ -20,6 +20,7 @@ const HtmlRenderer = React.memo(({ mainText, fontSize }) => {
       contentWidth={width}
       systemFonts={systemFonts}
       baseStyle={htmlStyle}
+      defaultTextProps={{ selectable }}
     />
   );
 });
